@@ -30,7 +30,6 @@ Install the module for development:
     >>> import [redacted]
     >>>
 
-
 ## PEP8 Violations:
 
 >  We adhere to pep8, except we use a max line width of 120 characters and do not use E123 or E124.
