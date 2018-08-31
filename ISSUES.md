@@ -123,70 +123,21 @@ Add ```cython``` to ```requirements.yaml```.
 
 
 
-
-```
-    $ find . -name "*.py" | xargs  grep tranform
-    ./modules/python/[redacted]/coord/homogeneous.py:def tranform(X, M):
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    out = h.tranform(i, np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    ox, oy, oz = h.tranform((x, y, z), np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    ox, oy, oz = h.tranform((x, y, z), np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    ox, oy, oz = h.tranform((x, y, z), np.identity(4))
-    ./modules/python/[redacted]/coord/unittests/test_homogeneous.py:    ox, oy, oz = h.tranform((x, y, z), np.identity(4))
-```
-
 ## pytest failures
 
 ### Error 1:
 
-
-    =============================================== FAILURES ===============================================
-    ______________________________________________ test_toLLA ______________________________________________
-
-        def test_toLLA():
-    >       assert np.allclose(ecef.toLLA(list(unpacked_ecef)), packed_lla)
-    E       assert False
-    E        +  where False = <function allclose at 0x7fa6e2ecb378>(array([[-84.340086,  42.825226, 281.6     ],\n       [-84.400486,  42.685745, 258.8     ]]), array([[ 42.825226, -84.340086, 281.6     ],\n       [ 42.685745, -84.400486, 258.8     ]]))
-    E        +    where <function allclose at 0x7fa6e2ecb378> = np.allclose
-    E        +    and   array([[-84.340086,  42.825226, 281.6     ],\n       [-84.400486,  42.685745, 258.8     ]]) = <function toLLA at 0x7fa6e3f38d08>([[462088.79153139, 458198.17060913], [-4662537.62772459, -4673474.62537624], [4313473.17203725, 4302080.14183838]])
-    E        +      where <function toLLA at 0x7fa6e3f38d08> = ecef.toLLA
-    E        +      and   [[462088.79153139, 458198.17060913], [-4662537.62772459, -4673474.62537624], [4313473.17203725, 4302080.14183838]] = list(([462088.79153139, 458198.17060913], [-4662537.62772459, -4673474.62537624], [4313473.17203725, 4302080.14183838]))
-
-    modules/python/[redacted]/[redacted]/coord/unittests/test_ecef.py:24: AssertionError
-
+	[redacted]
 
 **Fix:**
 
-Swap first & second columns of ```packed_lla.```
+Swap first & second columns.
 
 ### Error 2:
 
-See debug/test_ecef_error.pdf for more details.
-
-    =============================================== FAILURES ===============================================
-    _____________________________ test_create_local_model_matrix_real_z_value ______________________________
-
-        def test_create_local_model_matrix_real_z_value():
-            out = np.array([[9.27364962e-01, -1.07851592e-02, 8.47464301e-02, 3.00000000e+01],
-                            [-7.20749970e-03, 9.13925013e-01, 1.69492860e-01, 4.00000000e+01],
-                            [-9.12949962e-02, -1.81706487e-01, 8.47464301e-01, 2.00000000e+01],
-                            [0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 1.00000000e+00]])
-            M = h.create_local_model_matrix(heading_vector=[.1, 4, .7], up_vector=[.3, .6, 3.], origin=[30, 40, 20])
-    >       assert np.allclose(M, out)
-    E       assert False
-    E        +  where False = <function allclose at 0x7fa6e2ecb378>(array([[ 2.85079893e+00,  2.46182982e-02,  2.72545455e-01,\n         3.00000000e+01],\n       [-2.21564684e-02,  9.84731...18e+00,\n         2.00000000e+01],\n       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,\n         1.00000000e+00]]), array([[ 9.27364962e-01, -1.07851592e-02,  8.47464301e-02,\n         3.00000000e+01],\n       [-7.20749970e-03,  9.13925...01e-01,\n         2.00000000e+01],\n       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,\n         1.00000000e+00]]))
-    E        +    where <function allclose at 0x7fa6e2ecb378> = np.allclose
-
-    modules/python/[redacted]/[redacted]/coord/unittests/test_homogeneous.py:61: AssertionError
-    ================================= 2 failed, 20 passed in 0.27 seconds ==================================
+	[redacted]
 
 **Fix:**
 
 1. Normalize up_vector.
 2. Correctly re-calculate Y vector.
-
-See debug/test_homogeneous_error.pdf for more details.
